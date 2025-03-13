@@ -1,6 +1,6 @@
 ---Host/Student info----
 
-Running on Thu Mar 13 03:56:26 PM EDT 2025
+Running on Thu Mar 13 04:10:41 PM EDT 2025
 Run by kamal-hasan - () on host
  Static hostname: kamal-hasan-VMware-Virtual-Platform
       Machine ID: 39d49e4d6d48469797cb279eee6dcc38
@@ -19,10 +19,179 @@ Network mgmt deleted
 Network lan created
 Network mgmt created
 Launching openwrt
-Retrieving image: Unpack: 100% (1.46GB/s)                                          Retrieving image: Unpack: 100% (1.46GB/s)                                          Launching server1
-Retrieving image: Unpack: 100% (607.24MB/s)                                            Retrieving image: Unpack: 100% (607.24MB/s)                                            Pushing /home/kamal-hasan/.ssh/id_ed25519.pub to /home/remoteadmin/.ssh/id_ed25519.pub: 100% (428.57MB/s)                                                                                                          Waiting for server1 restart
+Retrieving image: Unpack: 100% (478.81MB/s)                                            Retrieving image: Unpack: 100% (478.81MB/s)                                            Launching server1
+Retrieving image: Unpack: 100% (1.05GB/s)                                          Retrieving image: Unpack: 100% (1.05GB/s)                                          Pushing /home/kamal-hasan/.ssh/id_ed25519.pub to /home/remoteadmin/.ssh/id_ed25519.pub: 100% (143.81MB/s)                                                                                                          Waiting for server1 restart
 # Host server1-mgmt found: line 5
 /home/kamal-hasan/.ssh/known_hosts updated.
 Original contents retained as /home/kamal-hasan/.ssh/known_hosts.old
 ---Retrieving assignment2.sh script---
-Failed to retrieve assignment2.sh script using URL 'https://github.com/shani-bk/COMP2137/raw/main/assignment2.sh'
+Retrieved assignment2 script
+Copied assignment2.sh script to server1
+---assignment2.sh run----
+-------------------------
+
+--network--------
+/etc/hosts
+-----------------------
+127.0.0.1	localhost
+::1		localhost ip6-localhost ip6-loopback
+ff02::1		ip6-allnodes
+ff02::2		ip6-allrouters
+
+
+192.168.16.241 server1
+172.16.1.241 server1-mgmt
+192.168.16.2 openwrt
+172.16.1.2 openwrt-mgmt
+
+-------------
+/etc/netplan/10-lxc.yaml
+-----------------------
+network:
+    version: 2
+    ethernets:
+        eth0:
+            addresses: [192.168.16.241/24]
+            routes:
+              - to: default
+                via: 192.168.16.2
+            nameservers:
+                addresses: [192.168.16.2]
+                search: [home.arpa, localdomain]
+        eth1:
+            addresses: [172.16.1.241/24]
+-------------
+---applying netplan---
+---ip a---------------
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+241: eth0@if242: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:65:48:26 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.16.241/24 brd 192.168.16.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::216:3eff:fe65:4826/64 scope link 
+       valid_lft forever preferred_lft forever
+243: eth1@if244: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:9a:b9:37 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.16.1.241/24 brd 172.16.1.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::216:3eff:fe9a:b937/64 scope link 
+       valid_lft forever preferred_lft forever
+--ip r----------------
+default via 192.168.16.2 dev eth0 proto static 
+172.16.1.0/24 dev eth1 proto kernel scope link src 172.16.1.241 
+192.168.16.0/24 dev eth0 proto kernel scope link src 192.168.16.241 
+----------------------
+
+---services status------
+------------------------
+
+---ufw show added-------
+---ufw show status------
+------------------------
+
+---getents--------------------
+sudo:x:27:ubuntu
+---user home dir contents-----
+  1200865      4 -rw-r--r--   1 root     remoteadmin      220 Jan  6  2022 /home/remoteadmin/.bash_logout
+  1200866      4 -rw-r--r--   1 root     remoteadmin     3771 Jan  6  2022 /home/remoteadmin/.bashrc
+  1200817      0 -rwxr-xr-x   1 root     remoteadmin        0 Mar 13 20:11 /home/remoteadmin/assignment2.sh
+  1200867      4 -rw-r--r--   1 root     remoteadmin      807 Jan  6  2022 /home/remoteadmin/.profile
+  1199539      4 -rw-------   1 root     root             129 Mar 13 20:11 /home/remoteadmin/.ssh/authorized_keys
+  1199537      4 -rw-r--r--   1 root     ubuntu           129 Mar 13 20:11 /home/remoteadmin/.ssh/id_ed25519.pub
+  1179907      0 -rw-r--r--   1 root     root               0 Mar 13 20:11 /home/remoteadmin/.cache/motd.legal-displayed
+  1181741      4 -rw-r--r--   1 ubuntu   ubuntu           220 Jan  6  2022 /home/ubuntu/.bash_logout
+  1181742      4 -rw-r--r--   1 ubuntu   ubuntu          3771 Jan  6  2022 /home/ubuntu/.bashrc
+  1181743      4 -rw-r--r--   1 ubuntu   ubuntu           807 Jan  6  2022 /home/ubuntu/.profile
+/home/remoteadmin/.ssh/authorized_keys
+-----------------------
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFF+FSkfLWpcm8xexvxx0vEb3uHJyDhBfYNOgjYBR+rn kamal-hasan@kamal-hasan-VMware-Virtual-Platform
+-------------
+------------------------------
+
+---assignment2.sh rerun--------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+--network--------
+/etc/hosts
+-----------------------
+127.0.0.1	localhost
+::1		localhost ip6-localhost ip6-loopback
+ff02::1		ip6-allnodes
+ff02::2		ip6-allrouters
+
+
+192.168.16.241 server1
+172.16.1.241 server1-mgmt
+192.168.16.2 openwrt
+172.16.1.2 openwrt-mgmt
+
+-------------
+/etc/netplan/10-lxc.yaml
+-----------------------
+network:
+    version: 2
+    ethernets:
+        eth0:
+            addresses: [192.168.16.241/24]
+            routes:
+              - to: default
+                via: 192.168.16.2
+            nameservers:
+                addresses: [192.168.16.2]
+                search: [home.arpa, localdomain]
+        eth1:
+            addresses: [172.16.1.241/24]
+-------------
+---applying netplan---
+---ip a---------------
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+241: eth0@if242: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:65:48:26 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.16.241/24 brd 192.168.16.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::216:3eff:fe65:4826/64 scope link 
+       valid_lft forever preferred_lft forever
+243: eth1@if244: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:9a:b9:37 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.16.1.241/24 brd 172.16.1.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::216:3eff:fe9a:b937/64 scope link 
+       valid_lft forever preferred_lft forever
+--ip r----------------
+default via 192.168.16.2 dev eth0 proto static 
+172.16.1.0/24 dev eth1 proto kernel scope link src 172.16.1.241 
+192.168.16.0/24 dev eth0 proto kernel scope link src 192.168.16.241 
+----------------------
+
+---services status------
+------------------------
+
+---getents--------------------
+sudo:x:27:ubuntu
+---user home dir contents-----
+  1200865      4 -rw-r--r--   1 root     remoteadmin      220 Jan  6  2022 /home/remoteadmin/.bash_logout
+  1200866      4 -rw-r--r--   1 root     remoteadmin     3771 Jan  6  2022 /home/remoteadmin/.bashrc
+  1200817      0 -rwxr-xr-x   1 root     remoteadmin        0 Mar 13 20:11 /home/remoteadmin/assignment2.sh
+  1200867      4 -rw-r--r--   1 root     remoteadmin      807 Jan  6  2022 /home/remoteadmin/.profile
+  1199539      4 -rw-------   1 root     root             129 Mar 13 20:11 /home/remoteadmin/.ssh/authorized_keys
+  1199537      4 -rw-r--r--   1 root     ubuntu           129 Mar 13 20:11 /home/remoteadmin/.ssh/id_ed25519.pub
+  1179907      0 -rw-r--r--   1 root     root               0 Mar 13 20:11 /home/remoteadmin/.cache/motd.legal-displayed
+  1181741      4 -rw-r--r--   1 ubuntu   ubuntu           220 Jan  6  2022 /home/ubuntu/.bash_logout
+  1181742      4 -rw-r--r--   1 ubuntu   ubuntu          3771 Jan  6  2022 /home/ubuntu/.bashrc
+  1181743      4 -rw-r--r--   1 ubuntu   ubuntu           807 Jan  6  2022 /home/ubuntu/.profile
+/home/remoteadmin/.ssh/authorized_keys
+-----------------------
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFF+FSkfLWpcm8xexvxx0vEb3uHJyDhBfYNOgjYBR+rn kamal-hasan@kamal-hasan-VMware-Virtual-Platform
+-------------
+------------------------------
+
