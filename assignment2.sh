@@ -54,7 +54,7 @@ echo "Apache2 and Squid installed and started."
 
 ## USER ACCOUNT SETUP ##
 echo "Creating user accounts..."
-USERS=("kamal-hasan" "aubrey" "captain" "snibbles" "brownie" "scooter" "sandy" "perrier" "cindy" "tiger" "yoda")
+USERS=("dennis" "aubrey" "captain" "snibbles" "brownie" "scooter" "sandy" "perrier" "cindy" "tiger" "yoda")
 for user in "${USERS[@]}"; do
     if id "$user" &>/dev/null; then
         echo "User $user already exists."
